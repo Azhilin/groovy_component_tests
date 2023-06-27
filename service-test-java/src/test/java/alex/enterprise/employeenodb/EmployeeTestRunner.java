@@ -6,6 +6,10 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", tags = "@employee")
+@CucumberOptions(
+        features = "src/test/resources/features",
+        tags = "@employee",
+        glue = "alex.enterprise.employeenodb"
+)
 public class EmployeeTestRunner extends SpringIntegrationTest {
 }
