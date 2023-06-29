@@ -12,10 +12,9 @@ import org.junit.runner.RunWith;
         glue = "alex.enterprise.employeenodb",
         plugin = {
                 "pretty",
-                "json:target/cucumber-report/component/cucumber.json",
+                "json:target/cucumber-report/component/cucumber_component.json",
                 "rerun:target/cucumber-report/rerun.txt"
-        },
-        monochrome = true
+        }
 )
-public class EmployeeTestRunner extends SpringIntegrationTest {
+public class ComponentTestRun extends SpringIntegrationTest {
 }

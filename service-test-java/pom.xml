@@ -13,10 +13,10 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <cucumber.version>4.3.1</cucumber.version>
+        <cucumber.version>4.4.0</cucumber.version>
+        <cucumber.reporting.version>4.6.0</cucumber.reporting.version>
         <commons.version>3.9</commons.version>
         <aspectj.version>1.8.10</aspectj.version>
-        <allure.version>2.10.0</allure.version>
     </properties>
 
     <dependencies>
@@ -64,12 +64,89 @@
             <version>${commons.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit4</artifactId>
-            <version>${allure.version}</version>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>${cucumber.reporting.version}</version>
             <scope>test</scope>
         </dependency>
 
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <configuration>
+                        <testFailureIgnore>true</testFailureIgnore>
+                        <reportsDirectory>${project.build.directory}/surefire-reports/integration-test</reportsDirectory>
+                        <includes>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <inckude>${maven.failsafe.plugin.include}</inckude>
+                        </includes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>verify</id>
+                            <goals>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.masterthought</groupId>
+                    <artifactId>maven-cucumber-reporting</artifactId>
+                    <version>${cucumber.reporting.version}</version>
+                    <executions>
+                        <execution>
+                            <id>execution</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <projectName>cucumberReporting</projectName>
+                                <skip>false</skip>
+                                <outputDirectory>${cucumber.reporting.outputDirectory}</outputDirectory>
+                                <inputDirectory>${cucumber.reporting.inputDirectory}</inputDirectory>
+                                <jsonFiles>
+                                    <param>**/cucumber_*.json</param>
+                                </jsonFiles>
+<!--                                <mergeFeaturesById>false</mergeFeaturesById>-->
+<!--                                <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>-->
+<!--                                <checkBuildResult>false</checkBuildResult>-->
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>component-tests</id>
+            <properties>
+                <maven.failsafe.plugin.include>**/*ComponentTestRun.class</maven.failsafe.plugin.include>
+                <cucumber.reporting.outputDirectory>${project.build.directory}/component-report-html</cucumber.reporting.outputDirectory>
+                <cucumber.reporting.inputDirectory>${project.build.directory}/cucumber-report/component</cucumber.reporting.inputDirectory>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                      <groupId>net.masterthought</groupId>
+                      <artifactId>maven-cucumber-reporting</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
