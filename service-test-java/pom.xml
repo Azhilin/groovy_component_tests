@@ -84,7 +84,7 @@
                         <reportsDirectory>${project.build.directory}/surefire-reports/integration-test</reportsDirectory>
                         <includes>
                             <!--suppress UnresolvedMavenProperty -->
-                            <inckude>${maven.failsafe.plugin.include}</inckude>
+                            <include>${maven.failsafe.plugin.include}</include>
                         </includes>
                     </configuration>
                     <executions>

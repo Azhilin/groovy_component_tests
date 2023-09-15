@@ -18,6 +18,7 @@
     <modules>
         <module>service</module>
         <module>service-test-java</module>
+        <module>service-test-java-groovy</module>
     </modules>
 
 
